@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+
 import './screens/help.dart';
 import './screens/home.dart';
 import './screens/search.dart';
+
+import './widgets/appBar.dart';
+import './widgets/AppDrawer.dart';
 
 void main() {
   runApp(MyApp());
@@ -84,9 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      drawer: AppDrawer(),
+      appBar: buildAppBar(),
       body: buildPageView(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
