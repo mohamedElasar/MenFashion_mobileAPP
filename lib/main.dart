@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './screens/help.dart';
 import './screens/home.dart';
@@ -6,6 +7,8 @@ import './screens/search.dart';
 
 import './widgets/appBar.dart';
 import './widgets/AppDrawer.dart';
+
+import './providers/categories.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,9 +18,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: MyHomePage(title: 'MenFashion'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => Categories(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        home: MyHomePage(title: 'MenFashion'),
+      ),
     );
   }
 }
@@ -32,6 +42,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var _isinit = true;
+  @override
+  void didChangeDependencies() {
+    if (_isinit) {
+      Provider.of<Categories>(context).fetchAndSetCategories();
+      super.didChangeDependencies();
+    }
+    _isinit = false;
+  }
+
   int bottomSelectedIndex = 0;
 
   PageController pageController = PageController(
@@ -65,11 +85,6 @@ class _MyHomePageState extends State<MyHomePage> {
       pageController.animateToPage(index,
           duration: Duration(milliseconds: 500), curve: Curves.ease);
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   List<BottomNavigationBarItem> buildBottomNavBarItems() {

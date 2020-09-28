@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:my_app_menfashion/providers/categories.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,6 +10,16 @@ class Home extends StatefulWidget {
 }
 
 class _RedState extends State<Home> {
+  var _isinit = true;
+  @override
+  void didChangeDependencies() {
+    if (_isinit) {
+      Provider.of<Categories>(context).fetchAndSetCategories();
+      super.didChangeDependencies();
+    }
+    _isinit = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,15 +61,24 @@ class _RedState extends State<Home> {
                 padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                 child: GridView.count(
                     scrollDirection: Axis.vertical,
-                    crossAxisCount: 4,
-                    children: List.generate(50, (index) {
-                      return Container(
-                        child: Card(
-                          color: Colors.amber,
-                          child: Text('data'),
-                        ),
-                      );
-                    }))),
+                    crossAxisCount: 2,
+                    children: Provider.of<Categories>(context)
+                        .categoreis
+                        .map(
+                          (cat) => Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            elevation: 5,
+                            margin: EdgeInsets.all(10),
+                            color: Colors.blue[200],
+                            child: Text(
+                              cat.title,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                        .toList())),
           )
         ],
       ),
