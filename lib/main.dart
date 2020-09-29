@@ -4,11 +4,14 @@ import 'package:provider/provider.dart';
 import './screens/help.dart';
 import './screens/home.dart';
 import './screens/search.dart';
+import 'screens/ShopsListView.dart';
 
 import './widgets/appBar.dart';
 import './widgets/AppDrawer.dart';
 
 import './providers/categories.dart';
+import 'package:my_app_menfashion/providers/shops.dart';
+import './providers/advs.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,11 +25,22 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => Categories(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Shops(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Advs(),
         )
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         home: MyHomePage(title: 'MenFashion'),
+        // initialRoute: '/',
+        routes: {
+          // '/': (ctx) => MyHomePage(),
+          ShopsListView.routeName: (ctx) => ShopsListView(),
+        },
       ),
     );
   }
@@ -42,16 +56,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var _isinit = true;
-  @override
-  void didChangeDependencies() {
-    if (_isinit) {
-      Provider.of<Categories>(context).fetchAndSetCategories();
-      super.didChangeDependencies();
-    }
-    _isinit = false;
-  }
-
   int bottomSelectedIndex = 0;
 
   PageController pageController = PageController(

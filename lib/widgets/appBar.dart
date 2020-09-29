@@ -5,13 +5,6 @@ const String com_logo = 'assets/images/company_logo.png';
 Widget buildAppBar() {
   return AppBar(
     iconTheme: IconThemeData(color: Colors.black54),
-
-    // leading: IconButton(
-    //     icon: Icon(
-    //       Icons.menu,
-    //       size: 30,
-    //     ),
-    //     onPressed: null),
     backgroundColor: Colors.white,
     title: Row(
       mainAxisAlignment: MainAxisAlignment.center,

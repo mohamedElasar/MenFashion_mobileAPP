@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/category.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import '../models/category.dart';
 
 class Categories with ChangeNotifier {
   List<Category> _cateories = [];
@@ -20,7 +21,6 @@ class Categories with ChangeNotifier {
         loadedCategories.add(Category(cat['name'], cat['id'].toString()));
       });
       _cateories = loadedCategories;
-      print(_cateories);
       notifyListeners();
     } catch (error) {
       throw (error);
