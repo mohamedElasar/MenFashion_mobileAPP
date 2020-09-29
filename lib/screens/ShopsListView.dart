@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app_menfashion/screens/shopScreen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/shops.dart';
@@ -54,15 +55,27 @@ class _ShopsListViewState extends State<ShopsListView> {
                 child: ListView.builder(
                     itemCount: Provider.of<Shops>(context).shops.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ShopItem(
-                          name: Provider.of<Shops>(context).shops[index].title,
-                          imageUrl:
-                              Provider.of<Shops>(context).shops[index].imageUrl,
-                          address:
-                              Provider.of<Shops>(context).shops[index].address,
-                          description: Provider.of<Shops>(context)
-                              .shops[index]
-                              .description);
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(ShopScreen.routName,
+                              arguments:
+                                  Provider.of<Shops>(context, listen: false)
+                                      .shops[index]
+                                      .id);
+                        },
+                        child: ShopItem(
+                            name:
+                                Provider.of<Shops>(context).shops[index].title,
+                            imageUrl: Provider.of<Shops>(context)
+                                .shops[index]
+                                .imageUrl,
+                            address: Provider.of<Shops>(context)
+                                .shops[index]
+                                .address,
+                            description: Provider.of<Shops>(context)
+                                .shops[index]
+                                .description),
+                      );
                     }),
               ));
   }

@@ -7,9 +7,11 @@ class Shop {
   final List<dynamic> categories;
   final String imageUrl;
   final String description;
+  final List<dynamic> items;
 
   Shop(
       {this.description,
+      this.items,
       this.imageUrl,
       this.title,
       this.id,

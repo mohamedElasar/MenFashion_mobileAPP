@@ -26,4 +26,8 @@ class Categories with ChangeNotifier {
       throw (error);
     }
   }
+
+  String findWithId(String id) {
+    return _cateories.firstWhere((element) => element.id == id).title;
+  }
 }

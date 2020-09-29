@@ -20,6 +20,7 @@ class Shops with ChangeNotifier {
       extractedData.forEach((shop) {
         loadedCategories.add(
           Shop(
+              items: shop['items'],
               title: shop['name'],
               address: shop['address'],
               categories: shop['categories'],

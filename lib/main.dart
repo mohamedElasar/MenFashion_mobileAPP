@@ -5,6 +5,7 @@ import './screens/help.dart';
 import './screens/home.dart';
 import './screens/search.dart';
 import 'screens/ShopsListView.dart';
+import 'screens/shopScreen.dart';
 
 import './widgets/appBar.dart';
 import './widgets/AppDrawer.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         routes: {
           // '/': (ctx) => MyHomePage(),
           ShopsListView.routeName: (ctx) => ShopsListView(),
+          ShopScreen.routName: (ctx) => ShopScreen()
         },
       ),
     );
