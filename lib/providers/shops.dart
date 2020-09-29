@@ -18,11 +18,15 @@ class Shops with ChangeNotifier {
       final extractedData = json.decode(response.body);
       final List<Shop> loadedCategories = [];
       extractedData.forEach((shop) {
-        loadedCategories.add(Shop(
-            title: shop['name'],
-            address: shop['address'],
-            categories: shop['categories'],
-            id: shop['id'].toString()));
+        loadedCategories.add(
+          Shop(
+              title: shop['name'],
+              address: shop['address'],
+              categories: shop['categories'],
+              id: shop['id'].toString(),
+              imageUrl: shop['image_url'].toString(),
+              description: shop['description']),
+        );
       });
       _shops = loadedCategories;
       notifyListeners();

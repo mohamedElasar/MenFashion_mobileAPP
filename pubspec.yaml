@@ -55,6 +55,8 @@ flutter:
     - assets/images/company_logo.png
     - assets/images/header_background.png
     - assets/images/background.jpg
+    - assets/images/clothes.png
+
     
   #   - images/a_dot_ham.jpeg
 

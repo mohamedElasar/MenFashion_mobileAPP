@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_app_menfashion/models/category.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/shops.dart';
+
+import '../widgets/shop_item.dart';
+import '../widgets/appBar.dart';
 
 class ShopsListView extends StatefulWidget {
   static const routeName = '/shops';
@@ -34,26 +37,33 @@ class _ShopsListViewState extends State<ShopsListView> {
 
   @override
   Widget build(BuildContext context) {
-    final shops_list = Provider.of<Shops>(context).shops;
+    // final shops_list = Provider.of<Shops>(context).shops;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Shops")),
-      body: _isloading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: shops_list.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                    leading: Icon(Icons.list),
-                    trailing: Text(
-                      shops_list[index].title,
-                      style: TextStyle(color: Colors.green, fontSize: 15),
-                    ),
-                    title: Text(shops_list[index].title),
-                    subtitle: Text(shops_list[index].address));
-              }),
-    );
+        appBar: buildAppBar(),
+        body: _isloading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/background.jpg"),
+                        fit: BoxFit.cover)),
+                width: double.infinity,
+                child: ListView.builder(
+                    itemCount: Provider.of<Shops>(context).shops.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ShopItem(
+                          name: Provider.of<Shops>(context).shops[index].title,
+                          imageUrl:
+                              Provider.of<Shops>(context).shops[index].imageUrl,
+                          address:
+                              Provider.of<Shops>(context).shops[index].address,
+                          description: Provider.of<Shops>(context)
+                              .shops[index]
+                              .description);
+                    }),
+              ));
   }
 }

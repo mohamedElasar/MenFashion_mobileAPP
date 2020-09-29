@@ -5,6 +5,14 @@ class Shop {
   final String id;
   final String address;
   final List<dynamic> categories;
+  final String imageUrl;
+  final String description;
 
-  Shop({this.title, this.id, this.categories, this.address});
+  Shop(
+      {this.description,
+      this.imageUrl,
+      this.title,
+      this.id,
+      this.categories,
+      this.address});
 }
