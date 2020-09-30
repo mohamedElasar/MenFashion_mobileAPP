@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_app_menfashion/providers/categories.dart';
 import 'package:my_app_menfashion/providers/shops.dart';
+import 'package:my_app_menfashion/screens/items_show.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/screen_arguments.dart';
 
 class ShopScreen extends StatefulWidget {
   static const routName = '/one_shop';
@@ -177,28 +180,36 @@ class _ShopScreenState extends State<ShopScreen> {
                           mainAxisSpacing: 10,
                         ),
                         itemCount: items_shop_forId.length,
-                        itemBuilder: (ctx, i) => GridTile(
-                          child: Image.network(
-                            items_shop_forId[i]['image_url'].toString(),
-                            fit: BoxFit.cover,
-                          ),
-                          footer: GridTileBar(
-                            leading: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.attach_money,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  items_shop_forId[i]['price'].toString(),
-                                  style: TextStyle(color: Colors.white),
-                                )
-                              ],
+                        itemBuilder: (ctx, i) => GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                Items_Show.routeName,
+                                arguments:
+                                    ScreenArguments(items_shop_forId[i], shop));
+                          },
+                          child: GridTile(
+                            child: Image.network(
+                              items_shop_forId[i]['image_url'].toString(),
+                              fit: BoxFit.cover,
                             ),
-                            backgroundColor: Colors.black38,
-                            title: Text(
-                              items_shop_forId[i]['name'].toString(),
-                              textAlign: TextAlign.center,
+                            footer: GridTileBar(
+                              leading: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.attach_money,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    items_shop_forId[i]['price'].toString(),
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                ],
+                              ),
+                              backgroundColor: Colors.black38,
+                              title: Text(
+                                items_shop_forId[i]['name'].toString(),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),

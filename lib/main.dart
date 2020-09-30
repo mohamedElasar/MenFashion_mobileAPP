@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app_menfashion/screens/items_show.dart';
 import 'package:provider/provider.dart';
 
 import './screens/help.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
         routes: {
           // '/': (ctx) => MyHomePage(),
           ShopsListView.routeName: (ctx) => ShopsListView(),
-          ShopScreen.routName: (ctx) => ShopScreen()
+          ShopScreen.routName: (ctx) => ShopScreen(),
+          Items_Show.routeName: (ctx) => Items_Show(),
         },
       ),
     );
