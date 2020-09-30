@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_app_menfashion/providers/auth.dart';
+import 'package:my_app_menfashion/screens/auth_screen.dart';
 import 'package:my_app_menfashion/screens/items_show.dart';
+import 'package:my_app_menfashion/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import './screens/help.dart';
@@ -24,29 +27,46 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => Categories(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => Shops(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => Advs(),
-        )
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        home: MyHomePage(title: 'MenFashion'),
-        // initialRoute: '/',
-        routes: {
-          // '/': (ctx) => MyHomePage(),
-          ShopsListView.routeName: (ctx) => ShopsListView(),
-          ShopScreen.routName: (ctx) => ShopScreen(),
-          Items_Show.routeName: (ctx) => Items_Show(),
-        },
-      ),
-    );
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => Auth(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => Categories(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => Shops(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => Advs(),
+          ),
+        ],
+        child: Consumer<Auth>(
+          builder: (ctx, auth, _) => MaterialApp(
+            title: 'Flutter Demo',
+            home: auth.isAuth
+                ? MyHomePage(
+                    title: 'shop app',
+                  )
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (ctx, authResultSnapshot) =>
+                        authResultSnapshot.connectionState ==
+                                ConnectionState.waiting
+                            ? SplashScreen()
+                            : AuthScreen(),
+                  ),
+
+            // initialRoute: '/',
+            routes: {
+              // '/': (ctx) => MyHomePage(),
+              ShopsListView.routeName: (ctx) => ShopsListView(),
+              ShopScreen.routName: (ctx) => ShopScreen(),
+              Items_Show.routeName: (ctx) => Items_Show(),
+              // AuthScreen.routeName: (ctx) => AuthScreen(),
+            },
+          ),
+        ));
   }
 }
 

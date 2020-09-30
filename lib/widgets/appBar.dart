@@ -31,7 +31,7 @@ Widget buildAppBar() {
             Icons.search,
             size: 30,
           ),
-          onPressed: null),
+          onPressed: () => null),
     ],
   );
 }

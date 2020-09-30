@@ -23,7 +23,7 @@ class Categories with ChangeNotifier {
       _cateories = loadedCategories;
       notifyListeners();
     } catch (error) {
-      throw (error);
+      print(error);
     }
   }
 

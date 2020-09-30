@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
 
 class AppDrawer extends StatelessWidget {
   Widget _createHeader() {
@@ -63,7 +65,10 @@ class AppDrawer extends StatelessWidget {
               icon: Icons.account_box, text: 'Flutter Documentation'),
           _createDrawerItem(icon: Icons.stars, text: 'Useful Links'),
           Divider(),
-          _createDrawerItem(icon: Icons.bug_report, text: 'Report an issue'),
+          GestureDetector(
+            onTap: () => Provider.of<Auth>(context, listen: false).logout(),
+            child: _createDrawerItem(icon: Icons.bug_report, text: 'log out'),
+          ),
           ListTile(
             title: Text('0.0.1'),
             onTap: () {},
