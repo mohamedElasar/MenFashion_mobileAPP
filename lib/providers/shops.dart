@@ -11,6 +11,10 @@ class Shops with ChangeNotifier {
     return [..._shops];
   }
 
+  List<dynamic> shopCateg(String id) {
+    return _shops.firstWhere((element) => element.id == id).categories;
+  }
+
   Future<void> fetchAndSetshops(String cat_id) async {
     final url = 'http://10.0.2.2:8000/api/shops/?category=$cat_id';
     try {
