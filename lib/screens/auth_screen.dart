@@ -94,6 +94,7 @@ class _AuthCardState extends State<AuthCard> {
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
+    'name': '',
     'password': '',
   };
   var _isLoading = false;
@@ -137,6 +138,7 @@ class _AuthCardState extends State<AuthCard> {
         // Sign user up
         await Provider.of<Auth>(context, listen: false).signup(
           _authData['email'],
+          _authData['name'],
           _authData['password'],
         );
       }
@@ -187,8 +189,8 @@ class _AuthCardState extends State<AuthCard> {
       elevation: 8.0,
       child: Container(
         height: _authMode == AuthMode.Signup ? 320 : 260,
-        constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+        // constraints:
+        //     BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -208,6 +210,23 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['email'] = value;
                   },
                 ),
+                if (_authMode == AuthMode.Signup)
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'name'),
+                    keyboardType: TextInputType.name,
+                    validator: _authMode == AuthMode.Signup
+                        ? (value) {
+                            if (value.isEmpty || value.length < 2) {
+                              return 'Invalid name!';
+                            }
+                          }
+                        : null,
+                    onSaved: _authMode == AuthMode.Signup
+                        ? (value) {
+                            _authData['name'] = value;
+                          }
+                        : null,
+                  ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,

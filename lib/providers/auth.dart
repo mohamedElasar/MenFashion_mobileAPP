@@ -10,6 +10,8 @@ import '../models/http_exception.dart';
 class Auth with ChangeNotifier {
   String _token;
   String _email;
+  String _name;
+  String _userId;
 
   bool get isAuth {
     return token != null;
@@ -22,11 +24,15 @@ class Auth with ChangeNotifier {
     return null;
   }
 
-  String get userId {
-    return _email;
+  String get name {
+    return _name;
   }
 
-  Future<void> _authenticate(String email, String password) async {
+  String get userId {
+    return _userId;
+  }
+
+  Future<void> _authenticate(String email, String name, String password) async {
     final url = 'http://10.0.2.2:8000/api/user/create/';
     try {
       final response = await http.post(
@@ -34,6 +40,7 @@ class Auth with ChangeNotifier {
         body: json.encode(
           {
             'email': email,
+            'name': name,
             'password': password,
           },
         ),
@@ -56,7 +63,12 @@ class Auth with ChangeNotifier {
       }
       final responseData = json.decode(token_response.body);
       _token = responseData['token'];
-      _email = email;
+      _email = responseData['user']['email'];
+      _name = responseData['user']['name'];
+      _userId = responseData['user']['id'];
+
+      print(responseData);
+
       notifyListeners();
 
       final prefs = await SharedPreferences.getInstance();
@@ -64,6 +76,7 @@ class Auth with ChangeNotifier {
         {
           'token': _token,
           'email': _email,
+          'id': _userId,
         },
       );
       prefs.setString('userData', userData);
@@ -72,8 +85,8 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> signup(String email, String password) async {
-    return _authenticate(email, password);
+  Future<void> signup(String email, String name, String password) async {
+    return _authenticate(email, name, password);
   }
 
   Future<void> login(String email, String password) async {
@@ -94,7 +107,11 @@ class Auth with ChangeNotifier {
       throw HttpException(responseData['non_field_errors'][0]);
     }
     _token = responseData['token'];
-    _email = email;
+    _email = responseData['user']['email'];
+    _name = responseData['user']['name'];
+    _userId = responseData['user']['id'];
+
+    // print(_email);
 
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
@@ -102,6 +119,7 @@ class Auth with ChangeNotifier {
       {
         'token': _token,
         'email': _email,
+        'id': _userId,
       },
     );
     prefs.setString('userData', userData);
@@ -117,6 +135,8 @@ class Auth with ChangeNotifier {
 
     _token = extractedUserData['token'];
     _email = extractedUserData['email'];
+    _userId = extractedUserData['id'];
+
     notifyListeners();
     // _autoLogout();
     return true;

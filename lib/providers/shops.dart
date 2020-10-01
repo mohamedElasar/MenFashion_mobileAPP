@@ -11,6 +11,12 @@ class Shops with ChangeNotifier {
     return [..._shops];
   }
 
+  List<Shop> _favShops = [];
+
+  List<Shop> get favShops {
+    return [..._favShops];
+  }
+
   List<dynamic> shopCateg(String id) {
     return _shops.firstWhere((element) => element.id == id).categories;
   }

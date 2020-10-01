@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:my_app_menfashion/providers/auth.dart';
+import 'package:provider/provider.dart';
 
 const String com_logo = 'assets/images/company_logo.png';
 
-Widget buildAppBar() {
+Widget buildAppBar(context) {
+  // print(Provider.of<Auth>(context).name);
+  // bool authnticate = Provider.of<Auth>(context).isAuth;
   return AppBar(
     iconTheme: IconThemeData(color: Colors.black54),
     backgroundColor: Colors.white,
@@ -19,19 +23,27 @@ Widget buildAppBar() {
       ],
     ),
     actions: <Widget>[
-      IconButton(
-          icon: Icon(
-            Icons.favorite,
-            size: 30,
-            color: Colors.red,
-          ),
-          onPressed: null),
-      IconButton(
-          icon: Icon(
-            Icons.search,
-            size: 30,
-          ),
-          onPressed: () => null),
+      Row(
+        children: [
+          Consumer<Auth>(
+              builder: (ctx, auth, _) => auth.isAuth
+                  ? Text(
+                      'welcome ${auth.name}',
+                      style: TextStyle(color: Colors.black87),
+                    )
+                  : Text(
+                      '',
+                      style: TextStyle(color: Colors.red),
+                    )),
+          IconButton(
+              icon: Icon(
+                Icons.favorite,
+                size: 30,
+                color: Colors.red,
+              ),
+              onPressed: null),
+        ],
+      )
     ],
   );
 }

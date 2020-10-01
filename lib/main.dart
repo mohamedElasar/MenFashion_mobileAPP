@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: AppDrawer(),
-      appBar: buildAppBar(),
+      appBar: buildAppBar(context),
       body: buildPageView(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {

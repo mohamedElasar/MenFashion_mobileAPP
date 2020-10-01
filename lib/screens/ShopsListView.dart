@@ -41,7 +41,7 @@ class _ShopsListViewState extends State<ShopsListView> {
     // final shops_list = Provider.of<Shops>(context).shops;
 
     return Scaffold(
-        appBar: buildAppBar(),
+        appBar: buildAppBar(context),
         body: _isloading
             ? Center(
                 child: CircularProgressIndicator(),
