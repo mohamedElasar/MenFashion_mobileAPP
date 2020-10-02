@@ -57,6 +57,8 @@ flutter:
     - assets/images/header_background.png
     - assets/images/background.jpg
     - assets/images/clothes.png
+    - assets/images/empty.png
+
 
     
   #   - images/a_dot_ham.jpeg

@@ -137,22 +137,27 @@ class Shops with ChangeNotifier {
     }
   }
 
-  Future<Shop> fetchshopById(String urlSegment, String shop_id) async {
+  Future<List<Shop>> fetchshopById(String urlSegment, String shop_id) async {
+    await fetchAndSetFav();
     final url = 'http://10.0.2.2:8000/api/shops/?$urlSegment=$shop_id';
     try {
       final response = await http.get(url);
-      final shop = json.decode(response.body);
-      Shop loadedShop;
-      loadedShop = Shop(
-        items: shop['items'],
-        title: shop['name'],
-        address: shop['address'],
-        categories: shop['categories'],
-        id: shop['id'].toString(),
-        imageUrl: shop['image_url'].toString(),
-        description: shop['description'],
-      );
-      return loadedShop;
+      final loadedData = json.decode(response.body);
+      final List<Shop> loadedShops = [];
+
+      loadedData.forEach((shop) {
+        loadedShops.add(Shop(
+          items: shop['items'],
+          title: shop['name'],
+          address: shop['address'],
+          categories: shop['categories'],
+          id: shop['id'].toString(),
+          imageUrl: shop['image_url'].toString(),
+          description: shop['description'],
+        ));
+      });
+
+      return loadedShops;
     } catch (error) {
       throw (error);
     }

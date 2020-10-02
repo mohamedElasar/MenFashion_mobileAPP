@@ -10,6 +10,7 @@ import './screens/home.dart';
 import './screens/search.dart';
 import 'screens/ShopsListView.dart';
 import 'screens/shopScreen.dart';
+import './screens/favorits_Screen.dart';
 
 import './widgets/appBar.dart';
 import './widgets/AppDrawer.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
               ShopsListView.routeName: (ctx) => ShopsListView(),
               ShopScreen.routName: (ctx) => ShopScreen(),
               Items_Show.routeName: (ctx) => Items_Show(),
+              FavoritListView.routeName: (ctx) => FavoritListView(),
               // AuthScreen.routeName: (ctx) => AuthScreen(),
             },
           ),

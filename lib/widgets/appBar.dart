@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_app_menfashion/providers/auth.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/favorits_Screen.dart';
+
 const String com_logo = 'assets/images/company_logo.png';
 
 Widget buildAppBar(context) {
@@ -35,13 +37,18 @@ Widget buildAppBar(context) {
                       '',
                       style: TextStyle(color: Colors.red),
                     )),
-          IconButton(
-              icon: Icon(
-                Icons.favorite,
-                size: 30,
-                color: Colors.red,
-              ),
-              onPressed: null),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(FavoritListView.routeName);
+            },
+            child: IconButton(
+                icon: Icon(
+                  Icons.favorite,
+                  size: 30,
+                  color: Colors.red,
+                ),
+                onPressed: null),
+          ),
         ],
       )
     ],
