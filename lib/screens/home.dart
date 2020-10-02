@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app_menfashion/providers/advs.dart';
+import 'package:my_app_menfashion/providers/shops.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carousel_slider/carousel_options.dart';
@@ -30,6 +31,8 @@ class _RedState extends State<Home> {
           .fetchAndSetCategories()
           .then((_) =>
               Provider.of<Advs>(context, listen: false).fetchAndSetAdvs())
+          .then((_) =>
+              Provider.of<Shops>(context, listen: false).fetchAndSetFav())
           .then((_) => setState(() {
                 _isloading = false;
               }));

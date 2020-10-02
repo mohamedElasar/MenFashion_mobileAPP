@@ -11,7 +11,7 @@ class Auth with ChangeNotifier {
   String _token;
   String _email;
   String _name;
-  String _userId;
+  int _userId;
 
   bool get isAuth {
     return token != null;
@@ -24,11 +24,15 @@ class Auth with ChangeNotifier {
     return null;
   }
 
+  String get email {
+    return _email;
+  }
+
   String get name {
     return _name;
   }
 
-  String get userId {
+  int get userId {
     return _userId;
   }
 
@@ -66,8 +70,9 @@ class Auth with ChangeNotifier {
       _email = responseData['user']['email'];
       _name = responseData['user']['name'];
       _userId = responseData['user']['id'];
+      // print(_userId);
 
-      print(responseData);
+      // print(responseData);
 
       notifyListeners();
 
@@ -76,7 +81,7 @@ class Auth with ChangeNotifier {
         {
           'token': _token,
           'email': _email,
-          'id': _userId,
+          'userId': _userId,
         },
       );
       prefs.setString('userData', userData);
@@ -119,7 +124,7 @@ class Auth with ChangeNotifier {
       {
         'token': _token,
         'email': _email,
-        'id': _userId,
+        'userId': _userId,
       },
     );
     prefs.setString('userData', userData);
@@ -135,7 +140,7 @@ class Auth with ChangeNotifier {
 
     _token = extractedUserData['token'];
     _email = extractedUserData['email'];
-    _userId = extractedUserData['id'];
+    _userId = extractedUserData['userId'];
 
     notifyListeners();
     // _autoLogout();

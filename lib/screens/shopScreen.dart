@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app_menfashion/models/shop.dart';
 import 'package:my_app_menfashion/providers/categories.dart';
 import 'package:my_app_menfashion/providers/shops.dart';
 import 'package:my_app_menfashion/screens/items_show.dart';
@@ -13,34 +14,55 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
-  var _isinit = true;
+  var toggle;
   int _selectedIndex;
   var test;
-  @override
-  void didChangeDependencies() {
-    if (_isinit) {
-      _selectedIndex = 0;
-      _isinit = false;
-      super.didChangeDependencies();
-    }
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isinit) {
+  //     _selectedIndex = 0;
+  //     _isinit = false;
+  //     super.didChangeDependencies();
+  //   }
+  // }
 
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
   }
 
   @override
-  Widget build(BuildContext context) {
-    final shop_id = ModalRoute.of(context).settings.arguments as String;
+  void initState() {
+    _selectedIndex = 0;
+    super.initState();
+  }
 
-    final shop = Provider.of<Shops>(context)
+  @override
+  Widget build(BuildContext context) {
+    var empty = Shop(
+        address: '123',
+        categories: [1, 2, 3],
+        description: '',
+        id: '',
+        imageUrl: '',
+        items: [],
+        title: '');
+
+    final shop_id = (ModalRoute.of(context).settings.arguments) as String;
+    // print(Provider.of<Shops>(context)
+    //     .favShops
+    //     .any((element) => element.id == shop_id));
+    // print(shop_id == Provider.of<Shops>(context, listen: false).shops[0].id);
+
+    final shop = Provider.of<Shops>(context, listen: false)
         .shops
-        .firstWhere((element) => element.id == shop_id);
+        .firstWhere((element) => element.id == shop_id, orElse: () => empty);
 
     var choosen_cat = shop.categories[_selectedIndex];
 
     List<dynamic> items_shop_forId = (shop.items
         .where((element) => element['category_item'] == choosen_cat)).toList();
+
+    // toggle = ;
 
     return SafeArea(
       child: Scaffold(
@@ -87,10 +109,53 @@ class _ShopScreenState extends State<ShopScreen> {
                                 style: TextStyle(fontSize: 30),
                               ),
                               Spacer(),
-                              Icon(
-                                Icons.favorite_border,
-                                size: 30,
-                              )
+                              GestureDetector(
+                                onTap: () {
+                                  Provider.of<Shops>(context, listen: false)
+                                      .addFavoShops((shop_id));
+
+                                  // if (Provider.of<Shops>(context, listen: false)
+                                  //     .favShops
+                                  //     .any((element) =>
+                                  //         element.shopId == int.parse(shop_id))) {
+                                  //   setState(() {
+                                  //     toggle = true;
+                                  //   });
+                                  // } else {
+                                  //   setState(() {
+                                  //     toggle = false;
+                                  //   });
+                                  // }
+                                },
+                                child: Provider.of<Shops>(context).favShops.any(
+                                        (element) =>
+                                            element.shopId ==
+                                            int.parse(shop_id))
+                                    ? Icon(
+                                        Icons.favorite,
+                                        size: 30,
+                                        color: Colors.red,
+                                      )
+                                    : Icon(
+                                        Icons.favorite_border,
+                                        size: 30,
+                                        color: Colors.red,
+                                      ),
+                              ),
+
+                              //  Provider.of<Shops>(context)
+                              //         .favShops
+                              //         .any((element) => element.id == shop_id)
+                              //     ? Icon(
+                              //         Icons.favorite_border,
+                              //         size: 30,
+                              //       )
+                              //     : Icon(
+                              //         Icons.favorite,
+                              //         size: 30,
+                              //         color: Colors.red,
+                              //       ),
+
                               // ChangeNotifierProvider.value(
                               //   value: myshop,
                               //   child: Consumer<Shop>(

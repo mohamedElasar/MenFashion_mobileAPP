@@ -26,11 +26,13 @@ class _ShopsListViewState extends State<ShopsListView> {
       });
       final cat_id = ModalRoute.of(context).settings.arguments as String;
 
-      Provider.of<Shops>(context).fetchAndSetshops(cat_id).then((_) => {
-            setState(() {
-              _isloading = false;
-            })
-          });
+      Provider.of<Shops>(context)
+          .fetchAndSetshops('category', cat_id)
+          .then((_) => {
+                setState(() {
+                  _isloading = false;
+                })
+              });
     }
     _isinit = false;
     super.didChangeDependencies();
@@ -61,7 +63,8 @@ class _ShopsListViewState extends State<ShopsListView> {
                               arguments:
                                   Provider.of<Shops>(context, listen: false)
                                       .shops[index]
-                                      .id);
+                                      .id
+                                      .toString());
                         },
                         child: ShopItem(
                             name:

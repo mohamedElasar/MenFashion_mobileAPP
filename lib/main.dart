@@ -34,8 +34,13 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (_) => Categories(),
           ),
-          ChangeNotifierProvider(
-            create: (_) => Shops(),
+          ChangeNotifierProxyProvider<Auth, Shops>(
+            update: (ctx, auth, previousShops) => Shops(
+                auth.token,
+                auth.userId,
+                auth.email,
+                auth.name,
+                previousShops == null ? [] : previousShops.favShops),
           ),
           ChangeNotifierProvider(
             create: (_) => Advs(),

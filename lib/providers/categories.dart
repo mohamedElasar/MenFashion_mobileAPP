@@ -28,6 +28,10 @@ class Categories with ChangeNotifier {
   }
 
   String findWithId(String id) {
-    return _cateories.firstWhere((element) => element.id == id).title;
+    return _cateories
+        .firstWhere(
+          (element) => element.id == id,
+        )
+        .title;
   }
 }
