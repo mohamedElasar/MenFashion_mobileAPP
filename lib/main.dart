@@ -11,6 +11,7 @@ import './screens/search.dart';
 import 'screens/ShopsListView.dart';
 import 'screens/shopScreen.dart';
 import './screens/favorits_Screen.dart';
+import './screens/addShop_screen.dart';
 
 import './widgets/appBar.dart';
 import './widgets/AppDrawer.dart';
@@ -70,6 +71,8 @@ class MyApp extends StatelessWidget {
               ShopScreen.routName: (ctx) => ShopScreen(),
               Items_Show.routeName: (ctx) => Items_Show(),
               FavoritListView.routeName: (ctx) => FavoritListView(),
+              AddShopScreen.routeName: (ctx) => AddShopScreen(),
+
               // AuthScreen.routeName: (ctx) => AuthScreen(),
             },
           ),
@@ -138,6 +141,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange[400],
+        child: Icon(Icons.shop),
+        onPressed: () {
+          Navigator.of(context).pushNamed(AddShopScreen.routeName);
+        },
+      ),
       drawer: AppDrawer(),
       appBar: buildAppBar(context),
       body: buildPageView(),
