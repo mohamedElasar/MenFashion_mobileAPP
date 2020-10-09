@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/shop.dart';
 import '../models/Shop_fav_id.dart';
+import 'package:path/path.dart';
 
 class Shops with ChangeNotifier {
   List<Shop> _shops = [];
@@ -160,6 +162,75 @@ class Shops with ChangeNotifier {
       return loadedShops;
     } catch (error) {
       throw (error);
+    }
+  }
+
+  Future<void> addShop(Shop shop, File _image, var cats) async {
+    // print(cats);
+    final url = 'http://10.0.2.2:8000/api/shops/add/';
+    // print(basename(_image.path));
+    // print(shop.title);
+    // print(shop.address);
+    // print(shop.description);
+    // print(cats);
+    // print(_image);
+    // print(_image.path);
+    // print(basename(_image.path));
+    // print(_image.path.split('/').last);
+
+    // print(shop.title);
+    print(cats.toList());
+    var params = {
+      "name": shop.title,
+      "address": shop.address,
+      "description": shop.description,
+      "categories": cats.toList(),
+      "image_url": null
+    };
+
+    try {
+      // FormData form = FormData.fromMap({
+      //   "name": shop.title,
+      //   "address": shop.address,
+      //   "description": shop.description,
+      //   "categories": jsonEncode([1]),
+      //   "image_url": await MultipartFile.fromFile(_image.path,
+      //       filename: basename(_image.path)),
+      // });
+      // print(form.fields);
+
+      Dio dio = Dio();
+      // dio.options.headers['content-Type'] = 'application/json';
+      dio.options.headers["authorization"] = "Token $authToken";
+
+      final response = await dio.post(url, data: jsonEncode(params));
+
+      final id = response.data['id'];
+      print(id);
+      print(response);
+      await addImageShop(_image, id.toString());
+
+      notifyListeners();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> addImageShop(File _image, String id) async {
+    final url_img = 'http://10.0.2.2:8000/api/shops/img/$id/';
+    FormData form_img = FormData.fromMap({
+      "image_url": await MultipartFile.fromFile(_image.path,
+          filename: basename(_image.path)),
+    });
+
+    try {
+      Dio dio_img = Dio();
+      dio_img.options.headers["authorization"] = "Token $authToken";
+
+      final response_img = await dio_img.put(url_img, data: form_img);
+      // print(response_img);
+    } catch (error) {
+      print(error);
     }
   }
 }

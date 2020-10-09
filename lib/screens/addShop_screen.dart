@@ -19,14 +19,15 @@ class AddShopScreen extends StatefulWidget {
 }
 
 class _AddShopScreenState extends State<AddShopScreen> {
-  List _myActivities;
-  String _myActivitiesResult;
+  List<dynamic> _myActivities = [];
+  List<dynamic> _myActivitiesResult = [];
   var categories = [];
 
   final _descriptionFocusNode = FocusNode();
   final _addressFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+
   var _editedShop = Shop(
       id: null,
       title: '',
@@ -40,7 +41,10 @@ class _AddShopScreenState extends State<AddShopScreen> {
     'title': '',
     'description': '',
     'price': '',
+    'imageUrl': '',
     'address': '',
+    'categories': [],
+    'items': []
   };
   var _isInit = true;
   var _isLoading = false;
@@ -63,7 +67,7 @@ class _AddShopScreenState extends State<AddShopScreen> {
   @override
   void initState() {
     _myActivities = [];
-    _myActivitiesResult = '';
+    _myActivitiesResult = [];
     super.initState();
   }
 
@@ -120,8 +124,23 @@ class _AddShopScreenState extends State<AddShopScreen> {
     _form.currentState.save();
     setState(() {
       _isLoading = true;
-      _myActivitiesResult = _myActivities.toString();
+      _myActivitiesResult = _myActivities;
     });
+    // final shopCats =   Provider.of<Categories>(context).categoreis.where((element) => element.title==)
+    var list = [];
+    _myActivities.forEach((element) {
+      var catList = Provider.of<Categories>(context, listen: false)
+          .categoreis
+          .firstWhere((e) => e.title == element);
+      list.add(catList);
+    });
+    // print(list[0].id);
+
+    final catList_id = list.map((e) => (e.id));
+    // print(catList_id);
+
+    Provider.of<Shops>(context, listen: false)
+        .addShop(_editedShop, _image, catList_id);
     // if (_editedProduct.id != null) {
     //   await Provider.of<Products>(context, listen: false)
     //       .updateProduct(_editedProduct.id, _editedProduct);
@@ -156,7 +175,7 @@ class _AddShopScreenState extends State<AddShopScreen> {
     setState(() {
       _isLoading = false;
     });
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
     // Navigator.of(context).pop();
   }
 

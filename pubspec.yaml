@@ -29,6 +29,7 @@ dependencies:
   shared_preferences: ^0.5.12
   image_picker: ^0.6.7+11
   multiselect_formfield: ^0.1.4
+  dio: ^3.0.10
 
 
 
