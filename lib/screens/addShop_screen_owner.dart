@@ -2,53 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:my_app_menfashion/models/shop.dart';
 import 'package:my_app_menfashion/providers/categories.dart';
 import 'package:my_app_menfashion/providers/shops.dart';
+import 'package:my_app_menfashion/screens/add_item_screen.dart';
 import 'package:my_app_menfashion/screens/items_show.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/screen_arguments.dart';
 
-class ShopScreen extends StatefulWidget {
-  static const routName = '/one_shop';
+class ShopScreenOwner extends StatefulWidget {
+  static const routName = '/my_shop';
+
+  final String id;
+
+  const ShopScreenOwner({Key key, this.id}) : super(key: key);
   @override
-  _ShopScreenState createState() => _ShopScreenState();
+  _ShopScreenOwnerState createState() => _ShopScreenOwnerState();
 }
 
-class _ShopScreenState extends State<ShopScreen> {
+class _ShopScreenOwnerState extends State<ShopScreenOwner> {
   var toggle;
   int _selectedIndex;
   var test;
-  // @override
-  // void didChangeDependencies() {
-  //   if (_isinit) {
-  //     _selectedIndex = 0;
-  //     _isinit = false;
-  //     super.didChangeDependencies();
-  //   }
-  // }
+  var _isinit = true;
+  Shop shop;
+  Future<Shop> shopy;
+  @override
+  void didChangeDependencies() {
+    if (_isinit) {
+      // _selectedIndex = 0;
+      // await Provider.of<Shops>(context).searchShopId(widget.id.toString());
+      shopy = Provider.of<Shops>(context).searchShopOwner();
+
+      _isinit = false;
+      super.didChangeDependencies();
+    }
+  }
 
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
   }
 
-  // @override
-  // void initState() {
-  //   _selectedIndex = 0;
-  //   super.initState();
-  // }
-
-  String shop_id;
-
-  bool _isinit = true;
-  Future<Shop> shopy;
   @override
-  void didChangeDependencies() {
-    if (_isinit) {
-      _selectedIndex = 0;
-      shop_id = (ModalRoute.of(context).settings.arguments) as String;
-      shopy = Provider.of<Shops>(context).searchShopId(shop_id);
-    }
-    _isinit = false;
-    super.didChangeDependencies();
+  void initState() {
+    _selectedIndex = 0;
+    super.initState();
   }
 
   @override
@@ -61,13 +57,20 @@ class _ShopScreenState extends State<ShopScreen> {
     //     imageUrl: '',
     //     items: [],
     //     title: '');
+    // var shop = Provider.of<Shops>(context).ownerShop;
+    // var choosen_cat = ;
 
-    // // print(Provider.of<Shops>(context)
-    // //     .favShops
-    // //     .any((element) => element.id == shop_id));
-    // // print(shop_id == Provider.of<Shops>(context, listen: false).shops[0].id);
+    // List<dynamic> items_shop_forId = (shop.items
+    //     .where((element) => element['category_item'] == shop.categories[_selectedIndex])).toList();
+    // final shop_id = (ModalRoute.of(context).settings.arguments) as String;
+    // print(Provider.of<Shops>(context)
+    //     .favShops
+    //     .any((element) => element.id == shop_id));
+    // print(shop_id == Provider.of<Shops>(context, listen: false).shops[0].id);
 
-    // final shop = Provider.of<Shops>(context, listen: false)
+    // final shop = Provider.of<Shops>(context).searchShopId(shop_id.toString());
+
+    //  Provider.of<Shops>(context, listen: false)
     //     .shops
     //     .firstWhere((element) => element.id == shop_id, orElse: () => empty);
 
@@ -75,6 +78,17 @@ class _ShopScreenState extends State<ShopScreen> {
 
     return SafeArea(
       child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              // _settingModalBottomSheet(context);
+              Navigator.of(context)
+                  .pushNamed(AddItemScreen.routeName)
+                  .then((value) => setState(() {
+                        _isinit = true;
+                      }));
+            },
+            child: Icon(Icons.add),
+          ),
           backgroundColor: Color(0xFFF3F5F7),
           resizeToAvoidBottomInset: true,
           body: FutureBuilder(
@@ -126,74 +140,25 @@ class _ShopScreenState extends State<ShopScreen> {
                                     Spacer(),
                                     GestureDetector(
                                       onTap: () {
-                                        Provider.of<Shops>(context,
-                                                listen: false)
-                                            .addFavoShops((shop_id));
-
-                                        // if (Provider.of<Shops>(context, listen: false)
-                                        //     .favShops
-                                        //     .any((element) =>
-                                        //         element.shopId == int.parse(shop_id))) {
-                                        //   setState(() {
-                                        //     toggle = true;
-                                        //   });
-                                        // } else {
-                                        //   setState(() {
-                                        //     toggle = false;
-                                        //   });
-                                        // }
+                                        // Provider.of<Shops>(context, listen: false)
+                                        //     .addFavoShops((widget.id));
                                       },
-                                      child: Provider.of<Shops>(context)
-                                              .favShops
-                                              .any((element) =>
-                                                  element.shopId ==
-                                                  int.parse(shop_id))
-                                          ? Icon(
-                                              Icons.favorite,
-                                              size: 30,
-                                              color: Colors.red,
-                                            )
-                                          : Icon(
-                                              Icons.favorite_border,
-                                              size: 30,
-                                              color: Colors.red,
-                                            ),
+                                      child: Icon(Icons.edit),
+                                      // child: Provider.of<Shops>(context).favShops.any(
+                                      //         (element) =>
+                                      //             element.shopId ==
+                                      //             int.parse(widget.id))
+                                      //     ? Icon(
+                                      //         Icons.favorite,
+                                      //         size: 30,
+                                      //         color: Colors.red,
+                                      //       )
+                                      //     : Icon(
+                                      //         Icons.favorite_border,
+                                      //         size: 30,
+                                      //         color: Colors.red,
+                                      //       ),
                                     ),
-
-                                    //  Provider.of<Shops>(context)
-                                    //         .favShops
-                                    //         .any((element) => element.id == shop_id)
-                                    //     ? Icon(
-                                    //         Icons.favorite_border,
-                                    //         size: 30,
-                                    //       )
-                                    //     : Icon(
-                                    //         Icons.favorite,
-                                    //         size: 30,
-                                    //         color: Colors.red,
-                                    //       ),
-
-                                    // ChangeNotifierProvider.value(
-                                    //   value: myshop,
-                                    //   child: Consumer<Shop>(
-                                    //     builder: (_, shop, ch) => GestureDetector(
-                                    //       onTap: () {
-                                    //         shop.togglefavorit(id);
-                                    //       },
-                                    //       child: Provider.of<Shops>(context).isfavorit(id)
-                                    //           ? Icon(
-                                    //               Icons.favorite,
-                                    //               size: 30,
-                                    //               color: Colors.red,
-                                    //             )
-                                    //           : Icon(
-                                    //               Icons.favorite_border,
-                                    //               size: 30,
-                                    //             ),
-                                    //     ),
-                                    //   ),
-                                    // )
-                                    // child: Icon(Icons.favorite_border,size: 40,))
                                   ],
                                 ),
                               ),
@@ -341,3 +306,26 @@ class _ShopScreenState extends State<ShopScreen> {
     );
   }
 }
+
+// void _settingModalBottomSheet(context) {
+//   showModalBottomSheet(
+//       context: context,
+//       builder: (BuildContext bc) {
+//         return Container(
+//           height: 300,
+//           child: Wrap(
+//             children: <Widget>[
+//               ListTile(
+//                   leading: Icon(Icons.music_note),
+//                   title: Text('Music'),
+//                   onTap: () => {}),
+//               ListTile(
+//                 leading: Icon(Icons.videocam),
+//                 title: Text('Video'),
+//                 onTap: () => {},
+//               ),
+//             ],
+//           ),
+//         );
+//       });
+// }

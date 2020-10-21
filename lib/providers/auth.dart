@@ -82,6 +82,7 @@ class Auth with ChangeNotifier {
           'token': _token,
           'email': _email,
           'userId': _userId,
+          'name': _name,
         },
       );
       prefs.setString('userData', userData);
@@ -125,6 +126,7 @@ class Auth with ChangeNotifier {
         'token': _token,
         'email': _email,
         'userId': _userId,
+        'name': _name,
       },
     );
     prefs.setString('userData', userData);
@@ -141,6 +143,7 @@ class Auth with ChangeNotifier {
     _token = extractedUserData['token'];
     _email = extractedUserData['email'];
     _userId = extractedUserData['userId'];
+    _name = extractedUserData['name'];
 
     notifyListeners();
     // _autoLogout();

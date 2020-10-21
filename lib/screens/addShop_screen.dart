@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_app_menfashion/providers/auth.dart';
 import 'package:my_app_menfashion/providers/categories.dart';
+import 'package:my_app_menfashion/screens/addShop_screen_owner.dart';
+import 'package:my_app_menfashion/widgets/screen_args.dart';
 import 'package:provider/provider.dart';
 import '../models/shop.dart';
 import '../models/category.dart';
@@ -139,8 +141,11 @@ class _AddShopScreenState extends State<AddShopScreen> {
     final catList_id = list.map((e) => (e.id));
     // print(catList_id);
 
-    Provider.of<Shops>(context, listen: false)
+    await Provider.of<Shops>(context, listen: false)
         .addShop(_editedShop, _image, catList_id);
+
+    String owner_shop_id =
+        Provider.of<Shops>(context, listen: false).ownerShop.id;
     // if (_editedProduct.id != null) {
     //   await Provider.of<Products>(context, listen: false)
     //       .updateProduct(_editedProduct.id, _editedProduct);
@@ -175,7 +180,9 @@ class _AddShopScreenState extends State<AddShopScreen> {
     setState(() {
       _isLoading = false;
     });
-    // Navigator.of(context).pop();
+
+    Navigator.of(context).pushReplacementNamed(ShopScreenOwner.routName,
+        arguments: ScreenArguments(owner_shop_id));
     // Navigator.of(context).pop();
   }
 
