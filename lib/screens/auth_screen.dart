@@ -131,7 +131,7 @@ class _AuthCardState extends State<AuthCard> {
       if (_authMode == AuthMode.Login) {
         // Log user in
         await Provider.of<Auth>(context, listen: false).login(
-          _authData['email'],
+          _authData['name'],
           _authData['password'],
         );
       } else {
@@ -198,35 +198,34 @@ class _AuthCardState extends State<AuthCard> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'E-Mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['email'] = value;
-                  },
-                ),
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'name'),
-                    keyboardType: TextInputType.name,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                            if (value.isEmpty || value.length < 2) {
-                              return 'Invalid name!';
-                            }
-                          }
-                        : null,
-                    onSaved: _authMode == AuthMode.Signup
-                        ? (value) {
-                            _authData['name'] = value;
-                          }
-                        : null,
+                    decoration: InputDecoration(labelText: 'Email'),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value.isEmpty || !value.contains('@')) {
+                        return 'Invalid email!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['email'] = value;
+                    },
                   ),
+                // if (_authMode == AuthMode.Signup)
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'username'),
+                  keyboardType: TextInputType.name,
+                  validator: _authMode == AuthMode.Signup
+                      ? (value) {
+                          if (value.isEmpty || value.length < 2) {
+                            return 'Invalid name!';
+                          }
+                        }
+                      : null,
+                  onSaved: (value) {
+                    _authData['name'] = value;
+                  },
+                ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,

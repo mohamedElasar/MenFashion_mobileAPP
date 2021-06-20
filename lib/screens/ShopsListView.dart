@@ -27,7 +27,7 @@ class _ShopsListViewState extends State<ShopsListView> {
       final cat_id = ModalRoute.of(context).settings.arguments as String;
 
       Provider.of<Shops>(context)
-          .fetchAndSetshops('category', cat_id)
+          .fetchAndSetshops('?category', cat_id)
           .then((_) => {
                 setState(() {
                   _isloading = false;

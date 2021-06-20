@@ -23,13 +23,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  carousel_slider: ^2.3.1
-  http: ^0.12.2
-  provider: ^4.3.2+2
-  shared_preferences: ^0.5.12
-  image_picker: ^0.6.7+11
-  multiselect_formfield: ^0.1.4
-  dio: ^3.0.10
+  carousel_slider: ^3.0.0
+  http: ^0.13.3
+  provider: ^5.0.0
+  shared_preferences: ^2.0.6
+  image_picker: ^0.8.0+3
+  multiselect_formfield: ^0.1.6
+  dio: ^4.0.0
 
 
 

@@ -17,24 +17,10 @@ class _ShopScreenState extends State<ShopScreen> {
   var toggle;
   int _selectedIndex;
   var test;
-  // @override
-  // void didChangeDependencies() {
-  //   if (_isinit) {
-  //     _selectedIndex = 0;
-  //     _isinit = false;
-  //     super.didChangeDependencies();
-  //   }
-  // }
 
   _onSelected(int index) {
     setState(() => _selectedIndex = index);
   }
-
-  // @override
-  // void initState() {
-  //   _selectedIndex = 0;
-  //   super.initState();
-  // }
 
   String shop_id;
 
@@ -53,26 +39,6 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // var empty = Shop(
-    //     address: '123',
-    //     categories: [1, 2, 3],
-    //     description: '',
-    //     id: '',
-    //     imageUrl: '',
-    //     items: [],
-    //     title: '');
-
-    // // print(Provider.of<Shops>(context)
-    // //     .favShops
-    // //     .any((element) => element.id == shop_id));
-    // // print(shop_id == Provider.of<Shops>(context, listen: false).shops[0].id);
-
-    // final shop = Provider.of<Shops>(context, listen: false)
-    //     .shops
-    //     .firstWhere((element) => element.id == shop_id, orElse: () => empty);
-
-    // toggle = ;
-
     return SafeArea(
       child: Scaffold(
           backgroundColor: Color(0xFFF3F5F7),
@@ -129,19 +95,6 @@ class _ShopScreenState extends State<ShopScreen> {
                                         Provider.of<Shops>(context,
                                                 listen: false)
                                             .addFavoShops((shop_id));
-
-                                        // if (Provider.of<Shops>(context, listen: false)
-                                        //     .favShops
-                                        //     .any((element) =>
-                                        //         element.shopId == int.parse(shop_id))) {
-                                        //   setState(() {
-                                        //     toggle = true;
-                                        //   });
-                                        // } else {
-                                        //   setState(() {
-                                        //     toggle = false;
-                                        //   });
-                                        // }
                                       },
                                       child: Provider.of<Shops>(context)
                                               .favShops
@@ -159,41 +112,6 @@ class _ShopScreenState extends State<ShopScreen> {
                                               color: Colors.red,
                                             ),
                                     ),
-
-                                    //  Provider.of<Shops>(context)
-                                    //         .favShops
-                                    //         .any((element) => element.id == shop_id)
-                                    //     ? Icon(
-                                    //         Icons.favorite_border,
-                                    //         size: 30,
-                                    //       )
-                                    //     : Icon(
-                                    //         Icons.favorite,
-                                    //         size: 30,
-                                    //         color: Colors.red,
-                                    //       ),
-
-                                    // ChangeNotifierProvider.value(
-                                    //   value: myshop,
-                                    //   child: Consumer<Shop>(
-                                    //     builder: (_, shop, ch) => GestureDetector(
-                                    //       onTap: () {
-                                    //         shop.togglefavorit(id);
-                                    //       },
-                                    //       child: Provider.of<Shops>(context).isfavorit(id)
-                                    //           ? Icon(
-                                    //               Icons.favorite,
-                                    //               size: 30,
-                                    //               color: Colors.red,
-                                    //             )
-                                    //           : Icon(
-                                    //               Icons.favorite_border,
-                                    //               size: 30,
-                                    //             ),
-                                    //     ),
-                                    //   ),
-                                    // )
-                                    // child: Icon(Icons.favorite_border,size: 40,))
                                   ],
                                 ),
                               ),

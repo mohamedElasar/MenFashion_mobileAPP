@@ -12,7 +12,7 @@ class Advs with ChangeNotifier {
   }
 
   Future<void> fetchAndSetAdvs() async {
-    const url = 'http://10.0.2.2:8000/api/adv';
+    final url = Uri.http('10.0.2.2:8000', '/api/adv');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body);

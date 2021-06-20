@@ -7,8 +7,6 @@ import '../screens/favorits_Screen.dart';
 const String com_logo = 'assets/images/company_logo.png';
 
 Widget buildAppBar(context) {
-  // print(Provider.of<Auth>(context).name);
-  // bool authnticate = Provider.of<Auth>(context).isAuth;
   return AppBar(
     iconTheme: IconThemeData(color: Colors.black54),
     backgroundColor: Colors.white,

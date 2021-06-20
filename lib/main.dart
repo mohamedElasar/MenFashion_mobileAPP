@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app_menfashion/models/shop.dart';
 import 'package:my_app_menfashion/providers/auth.dart';
-import 'package:my_app_menfashion/screens/addShop_screen_owner.dart';
-import 'package:my_app_menfashion/screens/add_item_screen.dart';
 import 'package:my_app_menfashion/screens/auth_screen.dart';
 import 'package:my_app_menfashion/screens/items_show.dart';
 import 'package:my_app_menfashion/screens/splash_screen.dart';
@@ -15,7 +13,6 @@ import './screens/search.dart';
 import 'screens/ShopsListView.dart';
 import 'screens/shopScreen.dart';
 import './screens/favorits_Screen.dart';
-import './screens/addShop_screen.dart';
 
 import './widgets/appBar.dart';
 import './widgets/AppDrawer.dart';
@@ -54,6 +51,7 @@ class MyApp extends StatelessWidget {
         ],
         child: Consumer<Auth>(
           builder: (ctx, auth, _) => MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             home: auth.isAuth
                 ? MyHomePage(
@@ -75,25 +73,8 @@ class MyApp extends StatelessWidget {
               ShopScreen.routName: (ctx) => ShopScreen(),
               Items_Show.routeName: (ctx) => Items_Show(),
               FavoritListView.routeName: (ctx) => FavoritListView(),
-              AddShopScreen.routeName: (ctx) => AddShopScreen(),
-              ShopScreenOwner.routName: (ctx) => ShopScreenOwner(),
-              AddItemScreen.routeName: (ctx) => AddItemScreen(),
 
               // AuthScreen.routeName: (ctx) => AuthScreen(),
-            },
-            onGenerateRoute: (settings) {
-              if (settings.name == ShopScreenOwner.routName) {
-                final ScreenArguments args = settings.arguments;
-
-                return MaterialPageRoute(
-                  builder: (context) {
-                    return ShopScreenOwner(
-                      id: args.id,
-                      // message: args.message,
-                    );
-                  },
-                );
-              }
             },
           ),
         ));
@@ -158,68 +139,21 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-  Future<Shop> _shopy;
-  bool _isinit = true;
-  @override
-  void didChangeDependencies() {
-    if (_isinit) {
-      _shopy = Provider.of<Shops>(context).searchShopOwner();
-    }
-    _isinit = false;
-    // Provider.of<Shops>(context, listen: false).searchShopOwner();
-    super.didChangeDependencies();
-  }
+  // Future<Shop> _shopy;
+  // bool _isinit = true;
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isinit) {
+  //     _shopy = Provider.of<Shops>(context).searchShopOwner();
+  //   }
+  //   _isinit = false;
+  //   // Provider.of<Shops>(context, listen: false).searchShopOwner();
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Consumer<Shops>(
-        builder: (ctx, shops, _) => FloatingActionButton(
-          child: FutureBuilder(
-              future: _shopy,
-              builder: (ctx, snapshot) =>
-                  snapshot.connectionState == ConnectionState.waiting
-                      ? CircularProgressIndicator()
-                      : GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(ShopScreenOwner.routName);
-                            arguments:
-                            ScreenArguments(
-                                Provider.of<Shops>(context, listen: false)
-                                    .ownerShop
-                                    .id);
-                          },
-                          child: Icon(Icons.shop))),
-        ),
-      ),
-
-//  (child: Icon(Icons.shop)),
-//             home: auth.isAuth
-//                 ? MyHomePage(
-//                     title: 'shop app',
-//                   )
-//                 : FutureBuilder(
-//                     future: auth.tryAutoLogin(),
-//                     builder: (ctx, authResultSnapshot) =>
-//                         authResultSnapshot.connectionState ==
-//                                 ConnectionState.waiting
-//                             ? SplashScreen()
-//                             : AuthScreen(),
-//                   ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.orange[400],
-      //   child:
-      //    Icon(Icons.shop),
-      //   onPressed: () {
-      //     Provider.of<Shops>(context, listen: false).ownerShop.id == ''
-      //         ? Navigator.of(context).pushNamed(AddShopScreen.routeName)
-      //         : Navigator.of(context).pushNamed(ShopScreenOwner.routName,
-      //             arguments: ScreenArguments(
-      //                 Provider.of<Shops>(context, listen: false).ownerShop.id));
-      //   },
-      // ),
       drawer: AppDrawer(),
       appBar: buildAppBar(context),
       body: buildPageView(),

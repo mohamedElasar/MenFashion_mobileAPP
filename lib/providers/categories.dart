@@ -12,9 +12,11 @@ class Categories with ChangeNotifier {
   }
 
   Future<void> fetchAndSetCategories() async {
-    const url = 'http://10.0.2.2:8000/api/categories';
+    final url3 = Uri.http('10.0.2.2:8000', '/api/categories');
+
+    // const ur3 = 'http://10.0.2.2:8000/api/categories';
     try {
-      final response = await http.get(url);
+      final response = await http.get(url3);
       final extractedData = json.decode(response.body);
       final List<Category> loadedCategories = [];
       extractedData.forEach((cat) {
@@ -23,7 +25,7 @@ class Categories with ChangeNotifier {
       _cateories = loadedCategories;
       notifyListeners();
     } catch (error) {
-      print(error);
+      throw (error);
     }
   }
 

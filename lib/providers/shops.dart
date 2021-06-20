@@ -50,10 +50,12 @@ class Shops with ChangeNotifier {
         _favShops.indexWhere((element) => element.shopId == int.parse(my_shop));
 
     if (existingIndex < 0) {
-      final url = 'http://10.0.2.2:8000/api/favorits/';
+      final url4 = Uri.http('10.0.2.2:8000', '/api/favorits/');
+
+      // final url = 'http://10.0.2.2:8000/api/favorits/';
       try {
         final response = await http.post(
-          url,
+          url4,
           headers: {
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: 'Token $authToken'
@@ -86,10 +88,12 @@ class Shops with ChangeNotifier {
   }
 
   Future<void> deleteFav(String fav_id) async {
-    final url = 'http://10.0.2.2:8000/api/favorits/$fav_id/';
+    final url5 = Uri.http('10.0.2.2:8000', '/api/favorits/$fav_id/');
+
+    // final url = 'http://10.0.2.2:8000/api/favorits/$fav_id/';
     try {
       await http.delete(
-        url,
+        url5,
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Token $authToken'
@@ -105,10 +109,21 @@ class Shops with ChangeNotifier {
   }
 
   Future<void> fetchAndSetshops(String urlSegment, String cat_id) async {
-    final url = 'http://10.0.2.2:8000/api/shops/?$urlSegment=$cat_id';
+    final url6 =
+        Uri.http('10.0.2.2:8000', '/api/shops/', {'$urlSegment': '$cat_id'});
+    print(urlSegment);
+    print(cat_id);
+
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url6,
+        headers: {
+          'Content-Type': 'application/json',
+          HttpHeaders.authorizationHeader: 'Token $authToken'
+        },
+      );
       final extractedData = json.decode(response.body);
+      print(response.request);
       final List<Shop> loadedCategories = [];
       extractedData.forEach((shop) {
         loadedCategories.add(
@@ -123,6 +138,7 @@ class Shops with ChangeNotifier {
         );
       });
       _shops = loadedCategories;
+      print(_shops);
       notifyListeners();
     } catch (error) {
       throw (error);
@@ -130,13 +146,16 @@ class Shops with ChangeNotifier {
   }
 
   Future<void> fetchAndSetFav() async {
-    final url = 'http://10.0.2.2:8000/api/favorits/';
+    final url7 = Uri.http('10.0.2.2:8000', '/api/favorits/');
+
+    // final url = 'http://10.0.2.2:8000/api/favorits/';
     try {
       final response = await http.get(
-        url,
+        url7,
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Token $authToken'
+          // 'Authorization': 'Token $authToken'
         },
       );
       final data = json.decode(response.body);
@@ -155,11 +174,24 @@ class Shops with ChangeNotifier {
     }
   }
 
-  Future<List<Shop>> fetchshopById(String urlSegment, String shop_id) async {
+  Future<List<Shop>> fetchshopById(String urlSegment, String shopid) async {
     await fetchAndSetFav();
-    final url = 'http://10.0.2.2:8000/api/shops/?$urlSegment=$shop_id';
+    final url8 =
+        Uri.http('10.0.2.2:8000', '/api/shops/', {'$urlSegment': '$shopid'});
+    print(shopid);
+    print(shopid);
+    print(shopid);
+    print(shopid);
+    print(shopid);
+
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url8,
+        headers: {
+          'Content-Type': 'application/json',
+          HttpHeaders.authorizationHeader: 'Token $authToken'
+        },
+      );
       final loadedData = json.decode(response.body);
       final List<Shop> loadedShops = [];
 
@@ -199,8 +231,7 @@ class Shops with ChangeNotifier {
       final response = await dio.post(url, data: jsonEncode(params));
 
       final id = response.data['id'];
-      print(id);
-      print(response);
+
       Response img = await addImageShop(_image, id.toString());
 
       Shop my_shop = Shop(
@@ -215,28 +246,15 @@ class Shops with ChangeNotifier {
 
       _ownerShop = my_shop;
 
-      // final prefs = await SharedPreferences.getInstance();
-      // final shopData = json.encode(
-      //   {
-      //     'id': response.data['id'].toString(),
-      //   'address': response.data['address'],
-      //   'description': response.data['description'],
-      //   'items': [],
-      //   'imageUrl': img.data['image_url'],
-      //   'title': response.data['name'],
-      //   'categories': response.data['categories'],
-      //   },
-      // );
-      // prefs.setString('shopData', shopData);
-
       notifyListeners();
     } catch (error) {
-      print(error);
+      throw (error);
     }
   }
 
   Future<Response> addImageShop(File _image, String id) async {
-    final url_img = 'http://10.0.2.2:8000/api/shops/img/$id/';
+    final url_img = Uri.http('10.0.2.2:8000', '/api/shops/img/$id/');
+
     FormData form_img = FormData.fromMap({
       "image_url": await MultipartFile.fromFile(_image.path,
           filename: basename(_image.path)),
@@ -246,18 +264,26 @@ class Shops with ChangeNotifier {
       Dio dio_img = Dio();
       dio_img.options.headers["authorization"] = "Token $authToken";
 
-      final response_img = await dio_img.put(url_img, data: form_img);
+      final response_img = await dio_img
+          .put('http://10.0.2.2:8000/api/shops/img/$id/', data: form_img);
       return response_img;
     } catch (error) {
-      print(error);
+      throw (error);
     }
   }
 
   Future<Shop> searchShopId(String shop_id) async {
     // await fetchAndSetFav();
-    final url = 'http://10.0.2.2:8000/api/shops/?id=$shop_id';
+    final url9 = Uri.http('10.0.2.2:8000', '/api/shops/', {'id': '$shop_id'});
+
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url9,
+        headers: {
+          'Content-Type': 'application/json',
+          HttpHeaders.authorizationHeader: 'Token $authToken'
+        },
+      );
       final loadedData = json.decode(response.body);
       final Shop owner_shop = Shop(
         items: loadedData[0]['items'],
@@ -269,18 +295,6 @@ class Shops with ChangeNotifier {
         description: loadedData[0]['description'],
       );
 
-      // loadedData.forEach((shop) {
-      //   loadedShops.add(Shop(
-      //     items: shop['items'],
-      //     title: shop['name'],
-      //     address: shop['address'],
-      //     categories: shop['categories'],
-      //     id: shop['id'].toString(),
-      //     imageUrl: shop['image_url'].toString(),
-      //     description: shop['description'],
-      //   ));
-      // });
-      // _ownerShop = owner_shop;
       notifyListeners();
       return owner_shop;
     } catch (error) {
@@ -288,56 +302,36 @@ class Shops with ChangeNotifier {
     }
   }
 
-  Future<Shop> searchShopOwner() async {
-    print(userId);
-    final ownerId = userId.toString();
-    // await fetchAndSetFav();
-    final url = 'http://10.0.2.2:8000/api/shops/?owner=$ownerId';
-    try {
-      final response = await http.get(url);
-      final loadedData = json.decode(response.body);
-      print(loadedData);
-      final Shop owner_shop = Shop(
-        items: loadedData[0]['items'],
-        title: loadedData[0]['name'],
-        address: loadedData[0]['address'],
-        categories: loadedData[0]['categories'],
-        id: loadedData[0]['id'].toString(),
-        imageUrl: loadedData[0]['image_url'],
-        description: loadedData[0]['description'],
-      );
-      print(owner_shop);
+  // Future<Shop> searchShopOwner() async {
+  //   final ownerId = userId.toString();
+  //   // await fetchAndSetFav();
+  //   final url10 =
+  //       Uri.http('10.0.2.2:8000', '/api/shops/', {'owner': '$ownerId'});
 
-      // loadedData.forEach((shop) {
-      //   loadedShops.add(Shop(
-      //     items: shop['items'],
-      //     title: shop['name'],
-      //     address: shop['address'],
-      //     categories: shop['categories'],
-      //     id: shop['id'].toString(),
-      //     imageUrl: shop['image_url'].toString(),
-      //     description: shop['description'],
-      //   ));
-      // });
-      _ownerShop = owner_shop;
-      notifyListeners();
+  //   try {
+  //     final response = await http.get(url10);
+  //     final loadedData = json.decode(response.body);
+  //     final Shop owner_shop = Shop(
+  //       items: loadedData[0]['items'],
+  //       title: loadedData[0]['name'],
+  //       address: loadedData[0]['address'],
+  //       categories: loadedData[0]['categories'],
+  //       id: loadedData[0]['id'].toString(),
+  //       imageUrl: loadedData[0]['image_url'],
+  //       description: loadedData[0]['description'],
+  //     );
 
-      return owner_shop;
-    } catch (error) {
-      print(error);
-    }
-  }
+  //     _ownerShop = owner_shop;
+  //     notifyListeners();
+
+  //     return owner_shop;
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
 
   Future<void> addItem(Item item, File _image, String cat) async {
     final url = 'http://10.0.2.2:8000/api/items/add/';
-
-    // var params = {
-    //   "name": shop.title,
-    //   "address": shop.address,
-    //   "description": shop.description,
-    //   "categories": cats.toList(),
-    //   "image_url": null
-    // };
 
     FormData form = FormData.fromMap({
       "name": item.name,
@@ -354,58 +348,9 @@ class Shops with ChangeNotifier {
 
       final response = await dio.post(url, data: form);
 
-      // final id = response.data['id'];
-      // print(id);
-      // print(response);
-      // Response img = await addImageShop(_image, id.toString());
-
-      // Shop my_shop = Shop(
-      //   id: response.data['id'].toString(),
-      //   address: response.data['address'],
-      //   description: response.data['description'],
-      //   items: [],
-      //   imageUrl: img.data['image_url'],
-      //   title: response.data['name'],
-      //   categories: response.data['categories'],
-      // );
-
-      // _ownerShop = my_shop;
-
-      // final prefs = await SharedPreferences.getInstance();
-      // final shopData = json.encode(
-      //   {
-      //     'id': response.data['id'].toString(),
-      //   'address': response.data['address'],
-      //   'description': response.data['description'],
-      //   'items': [],
-      //   'imageUrl': img.data['image_url'],
-      //   'title': response.data['name'],
-      //   'categories': response.data['categories'],
-      //   },
-      // );
-      // prefs.setString('shopData', shopData);
-
       notifyListeners();
     } catch (error) {
-      print(error);
+      throw (error);
     }
   }
-
-  // Future<Response> addImageShop(File _image, String id) async {
-  //   final url_img = 'http://10.0.2.2:8000/api/shops/img/$id/';
-  //   FormData form_img = FormData.fromMap({
-  //     "image_url": await MultipartFile.fromFile(_image.path,
-  //         filename: basename(_image.path)),
-  //   });
-
-  //   try {
-  //     Dio dio_img = Dio();
-  //     dio_img.options.headers["authorization"] = "Token $authToken";
-
-  //     final response_img = await dio_img.put(url_img, data: form_img);
-  //     return response_img;
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
 }

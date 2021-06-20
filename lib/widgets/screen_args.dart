@@ -1,6 +1,6 @@
-class ScreenArguments {
-  final String id;
-  // final String message;
+// class ScreenArguments {
+//   final String id;
+//   // final String message;
 
-  ScreenArguments(this.id);
-}
+//   ScreenArguments(this.id);
+// }

@@ -37,26 +37,29 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> _authenticate(String email, String name, String password) async {
-    final url = 'http://10.0.2.2:8000/api/user/create/';
+    // final url = 'http://10.0.2.2:8000/api/user/create/';
+    final url1 = Uri.http('10.0.2.2:8000', '/api/user/create/');
+
     try {
       final response = await http.post(
-        url,
+        url1,
         body: json.encode(
           {
             'email': email,
-            'name': name,
+            'username': name,
             'password': password,
           },
         ),
         headers: {'Content-Type': 'application/json'},
       );
       final v_email = json.decode(response.body)['email'];
+      final url2 = Uri.http('10.0.2.2:8000', '/api/user/token/');
 
       final token_response = await http.post(
-        'http://10.0.2.2:8000/api/user/token/',
+        url2,
         body: json.encode(
           {
-            'email': v_email,
+            'username': name,
             'password': password,
           },
         ),
@@ -68,11 +71,8 @@ class Auth with ChangeNotifier {
       final responseData = json.decode(token_response.body);
       _token = responseData['token'];
       _email = responseData['user']['email'];
-      _name = responseData['user']['name'];
+      _name = responseData['user']['username'];
       _userId = responseData['user']['id'];
-      // print(_userId);
-
-      // print(responseData);
 
       notifyListeners();
 
@@ -82,7 +82,7 @@ class Auth with ChangeNotifier {
           'token': _token,
           'email': _email,
           'userId': _userId,
-          'name': _name,
+          'username': _name,
         },
       );
       prefs.setString('userData', userData);
@@ -95,12 +95,14 @@ class Auth with ChangeNotifier {
     return _authenticate(email, name, password);
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String name, String password) async {
+    final url = Uri.http('10.0.2.2:8000', '/api/user/token/');
+
     final response = await http.post(
-      'http://10.0.2.2:8000/api/user/token/',
+      url,
       body: json.encode(
         {
-          'email': email,
+          'username': name,
           'password': password,
         },
       ),
@@ -114,10 +116,8 @@ class Auth with ChangeNotifier {
     }
     _token = responseData['token'];
     _email = responseData['user']['email'];
-    _name = responseData['user']['name'];
+    _name = responseData['user']['username'];
     _userId = responseData['user']['id'];
-
-    // print(_email);
 
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
@@ -126,7 +126,7 @@ class Auth with ChangeNotifier {
         'token': _token,
         'email': _email,
         'userId': _userId,
-        'name': _name,
+        'username': _name,
       },
     );
     prefs.setString('userData', userData);
@@ -143,7 +143,7 @@ class Auth with ChangeNotifier {
     _token = extractedUserData['token'];
     _email = extractedUserData['email'];
     _userId = extractedUserData['userId'];
-    _name = extractedUserData['name'];
+    _name = extractedUserData['username'];
 
     notifyListeners();
     // _autoLogout();
@@ -159,12 +159,4 @@ class Auth with ChangeNotifier {
     // prefs.remove('userData');
     prefs.clear();
   }
-
-  // void _autoLogout() {
-  //   if (_authTimer != null) {
-  //     _authTimer.cancel();
-  //   }
-  //   final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
-  //   _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
-  // }
 }
