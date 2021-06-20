@@ -2,7 +2,7 @@
 
 A new Flutter project.
 
-## User Authentication (signup and login) using django API. 
+## Token Authentication (signup and login) using django API. 
 ## using provider package for state management 
 ## using http package for handling requests from django API 
 ## using carousel_slider for showing adds 
