@@ -6,7 +6,7 @@ A new Flutter project.
 ## using provider package for state management 
 ## using http package for handling requests from django API 
 ## using carousel_slider for showing adds 
-## ability to add and delete favorit shops for each user in the database
+## ability to add and delete favorite shops for each user in the database
 
 
 
